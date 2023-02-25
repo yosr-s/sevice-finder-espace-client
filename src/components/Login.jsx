@@ -1,7 +1,47 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link,useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2';
+import UserService from '../service/UserService';
 
 const Login = () => {
+  const [Data, setData] = useState({});
+  const navigate = useNavigate();
+  const onChangeHandler = (e) => {
+    setData({
+      ...Data,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(Data);
+    UserService.authenticate(Data).then((res) => {
+      console.log(res);
+      console.log("helloooo");
+
+      localStorage.setItem("client_name", res.data.data.user.name);
+      localStorage.setItem("client_id", res.data.data.user._id);
+      localStorage.setItem("client_email", res.data.data.user.email);
+      localStorage.setItem("token", res.data.data.token);
+      localStorage.setItem("refreshToken", res.data.data.refreshtoken);
+
+      if ((res.data.status == "success") && (res.data.data.user.itemtype == "Customer")) {
+        
+        console.log("status",res.data.status);
+        console.log("itemtype",res.data.data.user.itemtype);
+        navigate("/");
+       
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "this account does not exist!",
+          footer: '<a href="">Why do I have this issue?</a>',
+        });
+      }
+    });
+  };
+
     return (
         <>
         <div>
@@ -17,6 +57,7 @@ const Login = () => {
   {/* Title Header End */}
   {/* Tab Section Start */}
   <section className="tab-sec gray">
+    <form onSubmit={onSubmitHandler}  method="post">
     <div className="container">
       <div className="col-lg-8 col-md-8 col-sm-12 col-lg-offset-2 col-md-offset-2">
         <div className="new-logwrap">
@@ -24,14 +65,14 @@ const Login = () => {
           <div className="form-group">
             <label>Email</label>
             <div className="input-with-icon">
-              <input type="email" className="form-control" placeholder="Enter Your Email" />
+              <input onChange={onChangeHandler} name="email" type="email" className="form-control" placeholder="Enter Your Email" />
               <i className="theme-cl ti-email" />
             </div>
           </div>
           <div className="form-group">
             <label>Password</label>
             <div className="input-with-icon">
-              <input type="password" className="form-control" placeholder="Enter Your Password" />
+              <input onChange={onChangeHandler} name="password" type="password" className="form-control" placeholder="Enter Your Password" />
               <i className="theme-cl ti-lock" />
             </div>
           </div>
@@ -49,6 +90,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    </form>
   </section>
   {/* Tab section End */}
   {/* ============================ Call To Action ================================== */}

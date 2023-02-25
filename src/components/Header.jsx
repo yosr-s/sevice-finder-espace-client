@@ -13,8 +13,8 @@ const Header = () => {
           </div>
           <div className="collapse navbar-collapse" id="navbar-menu">
             <ul className="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-              <li><a href="login.html"><i className="fa fa-pencil" aria-hidden="true" />SignUp</a></li>
-              <li className="left-br"><a href="javascript:void(0)" data-toggle="modal" data-target="#signup" className="signin">Sign In Now</a></li>
+              <li><Link to="/register"><i className="fa fa-pencil" aria-hidden="true" />Register</Link></li>
+              <li className="left-br"><Link to="login" data-toggle="modal" data-target="#signup" className="signin">Login Now</Link></li>
             </ul>
             <ul className="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
               <li className="">
