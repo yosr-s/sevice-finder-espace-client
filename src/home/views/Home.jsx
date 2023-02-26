@@ -248,10 +248,15 @@ useEffect(()=>{
                 <h4 className="flc-rate">$17/hr</h4>
                 <div className="tp-candidate-inner-box">
                   <div className="top-candidate-box-thumb">
+                  <Link to={`/profile/${item._id}`}>
                     <img src={"http://localhost:3000/file/"+item.infos.image} className="img-responsive img-circle" alt  />
+                    </Link>
                   </div>
                   <div className="top-candidate-box-detail">
+                  
+
                     <h4>{item.name}</h4>
+                   
                     <span className="location">{item.email}</span>
                   </div>
                   <div className="rattings">

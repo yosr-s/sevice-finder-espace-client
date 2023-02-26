@@ -144,7 +144,9 @@ const Profile = () => {
               <img src={"http://localhost:3000/file/"+item.customer.infos.image} className="img-responsive img-circle" alt />
             </div>
             <div className="review-detail">
+            
               <h4>{item.customer.name}</h4>
+           
               <span className="re-designation">{item.customer.email}</span>
               <p>{item.review}</p>
             </div>
