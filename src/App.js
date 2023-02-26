@@ -28,7 +28,7 @@ function App() {
           <Route path="/profiles/:id" element={<ProfilesService/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/contact" element={<Contact/>} />
-          <Route path="/project" element={<Project/>} />
+          <Route path="/project/:id" element={<Project/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/about" element={<About/>} />

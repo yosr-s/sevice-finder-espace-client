@@ -1,8 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import ProjectService from '../../service/ProjectService';
+
+
 
 const Project = () => {
+
+  const { id } = useParams();
+  const [Data, setData] = useState({});
+  useEffect(() => {
+    return () => {
+      ProjectService.getOne(id).then((res) => {
+        console.log("data of get by id  ", res.data);
+        setData(res.data);
+        //sleep(1000)
+        console.log("dattaaaaaaaaa",Data)
+      });
+    };
+  },[]);
+
+  
+
+
     return (
         <>
+      
+        
       <div>
   <div className="clearfix" />
   {/* Title Header Start */}
@@ -19,60 +42,45 @@ const Project = () => {
       <div className="row .no-mrg">
         {/* Start Blogs */}
         <div className="col-md-8">
+        {Data.galleries && Data.customer && (
           <article className="blog-news">
             <div className="short-blog">
               <figure className="img-holder">
-                <a href="blog-detail.html"><img src="assets/img/blog/1.jpg" className="img-responsive" alt="News" /></a>
+                <div className='row'>
+                  <div className='col-md-8'>
+               <img src={"http://localhost:3000/file/"+Data.galleries[0]} className="img-responsive" alt="News" style={{ width: '450px' }} />
                 <div className="blog-post-date">
-                  Mar 12, 2017
+                  {Data.service.nom}
+                </div>
+                </div>
+                <div>
+                <div className='col-md-4'>
+                   <img src={"http://localhost:3000/file/"+Data.galleries[1]} className="img-responsive" alt="News" style={{ width: '225px' }} />
+                 </div>
+                 <div className='col-md-4'>
+                   <img src={"http://localhost:3000/file/"+Data.galleries[1]} className="img-responsive" alt="News" style={{ width: '225px' }} />
+                 </div>
+
+                </div>
                 </div>
               </figure>
+              <br />
+            
+
               <div className="blog-content">
-                <div className="post-meta">By: <span className="author">Daniel Dax</span> | 10 Comments </div>
-                <a href="blog-detail.html"><h2>Helping Kids Grow Up Stronger</h2></a>
+                <div className="post-meta">By: <span className="author">{Data.customer.name}</span> | 10 Comments </div>
+                <a href="blog-detail.html"><h2>{Data.title}</h2></a>
                 <div className="blog-text">
-                  <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-                  <div className="post-meta">Filed Under: <span className="category"><a href="#">Technology</a></span></div>
+                  <p>{Data.description}</p>
+                  <div className="post-meta">Email of service provider: <span className="category"><a href="#">{Data.customer.email}</a></span></div>
                 </div>
               </div>
             </div>
           </article>
-          <article className="blog-news">
-            <div className="short-blog">
-              <figure className="img-holder">
-                <a href="blog-detail.html"><img src="assets/img/blog/2.jpg" className="img-responsive" alt="News" /></a>
-                <div className="blog-post-date">
-                  Mar 12, 2017
-                </div>
-              </figure>
-              <div className="blog-content">
-                <div className="post-meta">By: <span className="author">Daniel Dax</span> | 10 Comments </div>
-                <a href="blog-detail.html"><h2>Helping Kids Grow Up Stronger</h2></a>
-                <div className="blog-text">
-                  <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-                  <div className="post-meta">Filed Under: <span className="category"><a href="#">Technology</a></span></div>
-                </div>
-              </div>
-            </div>
-          </article>
-          <article className="blog-news">
-            <div className="short-blog">
-              <figure className="img-holder">
-                <a href="blog-detail.html"><img src="assets/img/blog/3.jpg" className="img-responsive" alt="News" /></a>
-                <div className="blog-post-date">
-                  Mar 12, 2017
-                </div>
-              </figure>
-              <div className="blog-content">
-                <div className="post-meta">By: <span className="author">Daniel Dax</span> | 10 Comments </div>
-                <a href="blog-detail.html"><h2>Helping Kids Grow Up Stronger</h2></a>
-                <div className="blog-text">
-                  <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-                  <div className="post-meta">Filed Under: <span className="category"><a href="#">Technology</a></span></div>
-                </div>
-              </div>
-            </div>
-          </article>
+        )}
+          
+         
+        
         </div>
         {/* End Blogs */}
         {/* Sidebar Start */}

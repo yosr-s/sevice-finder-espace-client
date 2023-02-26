@@ -104,7 +104,7 @@ const ProjectsService = () => {
               <img src={"http://localhost:3000/file/"+item.galleries[0]} className="img-responsive" alt />
             </div>
             <div className="brows-job-position">
-              <h3><a href="job-detail.html">{item.title}</a></h3>
+            <h3><Link to={`/project/${item._id}`}>{item.title}</Link></h3>
               <p><span>Service Provider: {item.customer.name}</span></p>
             </div>
             <div className="job-position">
