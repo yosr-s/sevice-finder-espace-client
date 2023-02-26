@@ -1,6 +1,50 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
+import CustomerService from '../../service/CustomerService';
+import ProjectService from '../../service/ProjectService';
+import ServiceService from '../../service/ServiceService';
 
 const Home = () => {
+  const [Projects, setProjects] = useState();
+  const [Services,setServices]=useState();
+  const [Customers,setCustomers]=useState();
+  const getAllProj=()=>{
+    ProjectService.getAll()
+    .then((res)=>{
+        console.log("projects",res.data)
+        setProjects(res.data)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+};
+const getAllServices=()=>{
+  ServiceService.getAll()
+  .then((res)=>{
+      console.log(res.data)
+      setServices(res.data)
+  })
+  .catch((err)=>{
+      console.log(err)
+  })
+};
+const getAllCustomers=()=>{
+  CustomerService.getAll()
+  .then((res)=>{
+      console.log("customers",res.data)
+      setCustomers(res.data.data)
+  })
+  .catch((err)=>{
+      console.log(err)
+  })
+};
+useEffect(()=>{
+  getAllProj();
+  getAllServices();
+  getAllCustomers();
+},[]);
+
+
     return (
         <>
          <div className="clearfix" />
@@ -11,7 +55,7 @@ const Home = () => {
       <div className="container">
         <div className="banner-caption">
           <div className="col-md-12 col-sm-12 banner-text">
-            <h1>7,000+ Browse Jobs</h1>
+            <h1>{Projects?.length} Projects to explore</h1>
             <div className="full-search-2 eclip-search italian-search hero-search-radius">
               <div className="hero-search-content">
                 <div className="row">
@@ -106,123 +150,30 @@ const Home = () => {
   <div className="container">
     <div className="row">
       <div className="main-heading">
-        <h2>Browse Jobs By <span>Category</span></h2>
-        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris aliquip.</p>
+        <h2>Browse Projects By <span>Service</span></h2>
+        <p>see our uploaded projects by the categories we provide</p>
       </div>
     </div>
     <div className="row">
+    {Services?.map((item,index)=>{
+             return(
       <div className="col-md-3 col-sm-6">
         <div className="category-box" data-aos="fade-up">
           <div className="category-desc">
             <div className="category-icon">
-              <img src="assets/img/cat-1.png" className="img-responsive" alt />
+              <img src={"http://localhost:3000/file/"+item.photo} className="img-responsive" alt />
               <i className="icon-bargraph abs-icon" aria-hidden="true" />
             </div>
             <div className="category-detail category-desc-text">
-              <h4> <a href="browse-jobs-grid.html">Accounting &amp; Finance</a></h4>
-              <p>122 Jobs</p>
+              <h4> <Link to={`/projects/${item._id}`}>{item.nom}</Link></h4>
+              <p>{item.projects.length} Projects</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="col-md-3 col-sm-6">
-        <div className="category-box" data-aos="fade-up">
-          <div className="category-desc">
-            <div className="category-icon">
-              <img src="assets/img/cat-2.png" className="img-responsive" alt />
-              <i className="icon-tools-2 abs-icon" aria-hidden="true" />
-            </div>
-            <div className="category-detail category-desc-text">
-              <h4> <a href="browse-jobs-grid.html">Automotive Jobs</a></h4>
-              <p>155 Jobs</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-3 col-sm-6">
-        <div className="category-box" data-aos="fade-up">
-          <div className="category-desc">
-            <div className="category-icon">
-              <img src="assets/img/cat-3.png" className="img-responsive" alt />
-              <i className="icon-briefcase abs-icon" aria-hidden="true" />
-            </div>
-            <div className="category-detail category-desc-text">
-              <h4> <a href="browse-jobs-grid.html">Business</a></h4>
-              <p>300 Jobs</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-3 col-sm-6">
-        <div className="category-box" data-aos="fade-up">
-          <div className="category-desc">
-            <div className="category-icon">
-              <img src="assets/img/cat-4.png" className="img-responsive" alt />
-              <i className="icon-edit abs-icon" aria-hidden="true" />
-            </div>
-            <div className="category-detail category-desc-text">
-              <h4> <a href="browse-jobs-grid.html">Education Training</a></h4>
-              <p>80 Jobs</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-3 col-sm-6">
-        <div className="category-box" data-aos="fade-up">
-          <div className="category-desc">
-            <div className="category-icon">
-              <img src="assets/img/cat-5.png" className="img-responsive" alt />
-              <i className="icon-heart abs-icon" aria-hidden="true" />
-            </div>
-            <div className="category-detail category-desc-text">
-              <h4> <a href="browse-jobs-grid.html">Healthcare</a></h4>
-              <p>120 Jobs</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-3 col-sm-6">
-        <div className="category-box" data-aos="fade-up">
-          <div className="category-desc">
-            <div className="category-icon">
-              <img src="assets/img/cat-6.png" className="img-responsive" alt />
-              <i className="icon-wine abs-icon" aria-hidden="true" />
-            </div>
-            <div className="category-detail category-desc-text">
-              <h4> <a href="browse-jobs-grid.html">Restaurant &amp; Food</a></h4>
-              <p>78 Jobs</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-3 col-sm-6">
-        <div className="category-box" data-aos="fade-up">
-          <div className="category-desc">
-            <div className="category-icon">
-              <img src="assets/img/cat-7.png" className="img-responsive" alt />
-              <i className="icon-map abs-icon" aria-hidden="true" />
-            </div>
-            <div className="category-detail category-desc-text">
-              <h4> <a href="browse-jobs-grid.html">Transportation</a></h4>
-              <p>90 Jobs</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-3 col-sm-6">
-        <div className="category-box" data-aos="fade-up">
-          <div className="category-desc">
-            <div className="category-icon">
-              <img src="assets/img/cat-8.png" className="img-responsive" alt />
-              <i className="icon-desktop abs-icon" aria-hidden="true" />
-            </div>
-            <div className="category-detail category-desc-text">
-              <h4> <a href="browse-jobs-grid.html">Telecommunications</a></h4>
-              <p>210 Jobs</p>
-            </div>
-          </div>
-        </div>
-      </div>
+        )
+      })}
+   
     </div>
   </div>
 </section>
@@ -254,19 +205,19 @@ const Home = () => {
           <div className="col-md-4 col-sm-4">
             <div className="working-process"><span className="process-img"><img src="assets/img/step-1.png" className="img-responsive" alt /><span className="process-num">01</span></span>
               <h4>Create An Account</h4>
-              <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
+              <p>Post a project to tell us about your skilss. We'll quickly match you with the right service seekers. </p>
             </div>
           </div>
           <div className="col-md-4 col-sm-4">
             <div className="working-process"><span className="process-img"><img src="assets/img/step-2.png" className="img-responsive" alt /><span className="process-num">02</span></span>
-              <h4>Search Jobs</h4>
-              <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
+              <h4>Search Projects</h4>
+              <p>search projects by services you're looking for, find the best service provider for you. </p>
             </div>
           </div>
           <div className="col-md-4 col-sm-4">
             <div className="working-process"><span className="process-img"><img src="assets/img/step-3.png" className="img-responsive" alt /><span className="process-num">03</span></span>
-              <h4>Save &amp; Apply</h4>
-              <p>Post a job to tell us about your project. We'll quickly match you with the right freelancers find place best.</p>
+              <h4>Contact &amp; hire</h4>
+              <p>contact the best service provider for your project to do, get your work done.</p>
             </div>
           </div>
         </div>
@@ -280,14 +231,16 @@ const Home = () => {
         <div className="row">
           <div className="col-md-12">
             <div className="main-heading">
-              <p>Best Candidate of The Year</p>
-              <h2>Hire Expert <span>Candidate</span></h2>
+              <p>Best Service Providers of The Year</p>
+              <h2>Hire Expert <span>Service Providers</span></h2>
             </div>
           </div>
         </div>
         {/*/row*/}
         <div className="row">
           {/* Single Freelancer Style 2 */}
+          {Customers?.filter(customer => customer.infos && customer.infos.service && customer.infos.service.nom).map((item,index)=>{
+     return(
           <div className="col-md-4 col-sm-6">
             <div className="top-candidate-wrap style-2">
               <div className="top-candidate-box">
@@ -295,11 +248,11 @@ const Home = () => {
                 <h4 className="flc-rate">$17/hr</h4>
                 <div className="tp-candidate-inner-box">
                   <div className="top-candidate-box-thumb">
-                    <img src="assets/img/can-5.jpg" className="img-responsive img-circle" alt />
+                    <img src={"http://localhost:3000/file/"+item.photo} className="img-responsive img-circle" alt />
                   </div>
                   <div className="top-candidate-box-detail">
-                    <h4>Agustin L. Smith</h4>
-                    <span className="location">Australia</span>
+                    <h4>{item.name}</h4>
+                    <span className="location">{item.email}</span>
                   </div>
                   <div className="rattings">
                     <i className="fa fa-star fill" />
@@ -310,91 +263,21 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="top-candidate-box-extra">
-                  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui.</p>
+                  <p></p>
                   <ul>
-                    <li>Php</li>
-                    <li>Android</li>
-                    <li>Html</li>
-                    <li className="more-skill bg-primary">+3</li>
+                    <li>{item.infos.service.nom}</li>
+                   
                   </ul>
                 </div>
                 <a href="top-candidate-detail.html" className="btn btn-candidate-two bg-default">View Detail</a>
-                <a href="#l" className="btn btn-candidate-two bg-info">Shortlist</a>
+                <a href="#l" className="btn btn-candidate-two bg-info">Contact</a>
               </div>
             </div>
           </div>
+            )
+          })}
           {/* Single Freelancer Style 2 */}
-          <div className="col-md-4 col-sm-6">
-            <div className="top-candidate-wrap style-2">
-              <div className="top-candidate-box">
-                <span className="tpc-status bg-warning">At Work</span>
-                <h4 className="flc-rate">$22/hr</h4>
-                <div className="tp-candidate-inner-box">
-                  <div className="top-candidate-box-thumb">
-                    <img src="assets/img/can-5.jpg" className="img-responsive img-circle" alt />
-                  </div>
-                  <div className="top-candidate-box-detail">
-                    <h4>Delores R. Williams</h4>
-                    <span className="location">United States</span>
-                  </div>
-                  <div className="rattings">
-                    <i className="fa fa-star fill" />
-                    <i className="fa fa-star fill" />
-                    <i className="fa fa-star fill" />
-                    <i className="fa fa-star-half fill" />
-                    <i className="fa fa-star" />
-                  </div>
-                </div>
-                <div className="top-candidate-box-extra">
-                  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui.</p>
-                  <ul>
-                    <li>Php</li>
-                    <li>Android</li>
-                    <li>Html</li>
-                    <li className="more-skill bg-primary">+3</li>
-                  </ul>
-                </div>
-                <a href="top-candidate-detail.html" className="btn btn-candidate-two bg-default">View Detail</a>
-                <a href="#l" className="btn btn-candidate-two bg-info">Shortlist</a>
-              </div>
-            </div>
-          </div>
-          {/* Single Freelancer Style 2 */}
-          <div className="col-md-4 col-sm-6">
-            <div className="top-candidate-wrap style-2">
-              <div className="top-candidate-box">
-                <span className="tpc-status">Available</span>
-                <h4 className="flc-rate">$19/hr</h4>
-                <div className="tp-candidate-inner-box">
-                  <div className="top-candidate-box-thumb">
-                    <img src="assets/img/can-5.jpg" className="img-responsive img-circle" alt />
-                  </div>
-                  <div className="top-candidate-box-detail">
-                    <h4>Daniel Disroyer</h4>
-                    <span className="location">Bangladesh</span>
-                  </div>
-                  <div className="rattings">
-                    <i className="fa fa-star fill" />
-                    <i className="fa fa-star fill" />
-                    <i className="fa fa-star fill" />
-                    <i className="fa fa-star-half fill" />
-                    <i className="fa fa-star" />
-                  </div>
-                </div>
-                <div className="top-candidate-box-extra">
-                  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui.</p>
-                  <ul>
-                    <li>Php</li>
-                    <li>Android</li>
-                    <li>Html</li>
-                    <li className="more-skill bg-primary">+3</li>
-                  </ul>
-                </div>
-                <a href="top-candidate-detail.html" className="btn btn-candidate-two bg-default">View Detail</a>
-                <a href="#l" className="btn btn-candidate-two bg-info">Shortlist</a>
-              </div>
-            </div>
-          </div>
+         
         </div>
         {/* Single Freelancer */}
         <div className="row">

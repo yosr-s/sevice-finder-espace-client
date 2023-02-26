@@ -1,6 +1,60 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
+import ProjectService from '../../service/ProjectService';
+import ServiceService from '../../service/ServiceService';
+import { useNavigate } from "react-router-dom";
+
 
 const Projects = () => {
+  const navigate = useNavigate();
+
+  const [Projects, setProjects] = useState();
+  const [Services,setServices]=useState();
+  const [cat, setCat] = useState({});
+
+  const getAllProj=()=>{
+    ProjectService.getAll()
+    .then((res)=>{
+        console.log("projects",res.data)
+        setProjects(res.data)
+        console.log("projects",Projects)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+};
+const getAllServices=()=>{
+  ServiceService.getAll()
+  .then((res)=>{
+      console.log(res.data)
+      setServices(res.data)
+  })
+  .catch((err)=>{
+      console.log(err)
+  })
+};
+const onChangeHandlerCat = (e) => {
+
+
+  console.log(e.target.value)
+  
+  setCat(e.target.value);
+  console.log("id of cat",cat);
+  
+};
+const handleFilterSubmit = (e) => {
+  e.preventDefault();
+  console.log(cat);
+  navigate("/projects/"+cat);
+};
+useEffect(()=>{
+  getAllProj();
+  getAllServices();
+ 
+},[]);
+
+
+
     return (
         <>
        <div>
@@ -19,7 +73,7 @@ const Projects = () => {
       {/* Company Searrch Filter Start */}
       <div className="row extra-mrg">
         <div className="wrap-search-filter">
-          <form>
+          <form method="post" onSubmit={handleFilterSubmit}>
             <div className="col-md-4 col-sm-4">
               <input type="text" className="form-control" placeholder="Keyword: Name, Tag" />
             </div>
@@ -27,15 +81,16 @@ const Projects = () => {
               <input type="text" className="form-control" placeholder="Location: City, State, Zip" />
             </div>
             <div className="col-md-3 col-sm-3">
-              <select className="form-control" id="j-category">
+              <select className="form-control" id="j-category" onChange={onChangeHandlerCat}>
                 <option value>&nbsp;</option>
-                <option value={1}>Information Technology</option>
-                <option value={2}>Mechanical</option>
-                <option value={3}>Hardware</option>
-                <option value={4}>Hospitality &amp; Tourism</option>
-                <option value={5}>Education &amp; Training</option>
-                <option value={6}>Government &amp; Public</option>
-                <option value={7}>Architecture</option>
+                {Services?.map((item,index)=>{
+             return(
+              
+                <option  value={item._id} >{item.nom}</option>
+                
+                )
+              })}
+              
               </select>
             </div>
             <div className="col-md-2 col-sm-2">
@@ -46,253 +101,31 @@ const Projects = () => {
       </div>
       {/* Company Searrch Filter End */}
       {/*Browse Job In Grid*/}
+       
       <div className="row extra-mrg">
+      {Projects?.map((item,index)=>{
+             return(
         <div className="col-md-4 col-sm-6">
           <div className="grid-view brows-job-list">
             <div className="brows-job-company-img">
-              <img src="assets/img/com-1.jpg" className="img-responsive" alt />
+              <img src={"http://localhost:3000/file/"+item.galleries[0]} className="img-responsive" alt />
             </div>
             <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
+              <h3><a href="job-detail.html">{item.title}</a></h3>
+              <p><span>{item.customer.name}</span></p>
             </div>
             <div className="job-position">
-              <span className="job-num">5 Position</span>
+              <span className="job-num">{item.galleries.length} galleries</span>
             </div>
-            <div className="brows-job-type">
-              <span className="full-time">Full Time</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-            <span className="tg-themetag tg-featuretag">Premium</span>
+            <br />
+           
+           
+            <span className="tg-themetag tg-featuretag">{item.service.nom}</span>
           </div>
         </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="grid-view brows-job-list">
-            <div className="brows-job-company-img">
-              <img src="assets/img/com-2.jpg" className="img-responsive" alt />
-            </div>
-            <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
-            </div>
-            <div className="job-position">
-              <span className="job-num">5 Position</span>
-            </div>
-            <div className="brows-job-type">
-              <span className="part-time">Part Time</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="grid-view brows-job-list">
-            <div className="brows-job-company-img">
-              <img src="assets/img/com-3.jpg" className="img-responsive" alt />
-            </div>
-            <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
-            </div>
-            <div className="job-position">
-              <span className="job-num">5 Position</span>
-            </div>
-            <div className="brows-job-type">
-              <span className="freelanc">Freelancer</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-            <span className="tg-themetag tg-featuretag">Premium</span>
-          </div>
-        </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="grid-view brows-job-list">
-            <div className="brows-job-company-img">
-              <img src="assets/img/com-4.jpg" className="img-responsive" alt />
-            </div>
-            <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
-            </div>
-            <div className="job-position">
-              <span className="job-num">5 Position</span>
-            </div>
-            <div className="brows-job-type">
-              <span className="enternship">Enternship</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="grid-view brows-job-list">
-            <div className="brows-job-company-img">
-              <img src="assets/img/com-5.jpg" className="img-responsive" alt />
-            </div>
-            <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
-            </div>
-            <div className="job-position">
-              <span className="job-num">5 Position</span>
-            </div>
-            <div className="brows-job-type">
-              <span className="full-time">Full Time</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="grid-view brows-job-list">
-            <div className="brows-job-company-img">
-              <img src="assets/img/com-6.jpg" className="img-responsive" alt />
-            </div>
-            <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
-            </div>
-            <div className="job-position">
-              <span className="job-num">5 Position</span>
-            </div>
-            <div className="brows-job-type">
-              <span className="part-time">Part Time</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-            <span className="tg-themetag tg-featuretag">Premium</span>
-          </div>
-        </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="grid-view brows-job-list">
-            <div className="brows-job-company-img">
-              <img src="assets/img/com-6.jpg" className="img-responsive" alt />
-            </div>
-            <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
-            </div>
-            <div className="job-position">
-              <span className="job-num">5 Position</span>
-            </div>
-            <div className="brows-job-type">
-              <span className="full-time">Full Time</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="grid-view brows-job-list">
-            <div className="brows-job-company-img">
-              <img src="assets/img/com-7.jpg" className="img-responsive" alt />
-            </div>
-            <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
-            </div>
-            <div className="job-position">
-              <span className="job-num">5 Position</span>
-            </div>
-            <div className="brows-job-type">
-              <span className="freelanc">Freelancer</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="grid-view brows-job-list">
-            <div className="brows-job-company-img">
-              <img src="assets/img/com-1.jpg" className="img-responsive" alt />
-            </div>
-            <div className="brows-job-position">
-              <h3><a href="job-detail.html">Web Developer</a></h3>
-              <p><span>Google</span></p>
-            </div>
-            <div className="job-position">
-              <span className="job-num">5 Position</span>
-            </div>
-            <div className="brows-job-type">
-              <span className="enternship">Enternship</span>
-            </div>
-            <ul className="grid-view-caption">
-              <li>
-                <div className="brows-job-location">
-                  <p><i className="fa fa-map-marker" />QBL Park, C40</p>
-                </div>
-              </li>
-              <li>
-                <p><span className="brows-job-sallery"><i className="fa fa-money" />$110 - 200</span></p>
-              </li>
-            </ul>
-          </div>
-        </div>
+         )
+        })}
+   
       </div>
       {/*/.Browse Job In Grid*/}
       <div className="row">
