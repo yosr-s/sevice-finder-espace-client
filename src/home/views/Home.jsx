@@ -232,7 +232,7 @@ useEffect(()=>{
           <div className="col-md-12">
             <div className="main-heading">
               <p>Best Service Providers of The Year</p>
-              <h2>Hire Expert <span>Service Providers</span></h2>
+              <h2>Most Starred <span>Service Providers</span></h2>
             </div>
           </div>
         </div>
@@ -241,14 +241,14 @@ useEffect(()=>{
           {/* Single Freelancer Style 2 */}
           {Customers?.filter(customer => customer.infos && customer.infos.service && customer.infos.service.nom).map((item,index)=>{
      return(
-          <div className="col-md-4 col-sm-6">
+          <div className="col-md-4 col-sm-6" >
             <div className="top-candidate-wrap style-2">
               <div className="top-candidate-box">
                 <span className="tpc-status">Available</span>
                 <h4 className="flc-rate">$17/hr</h4>
                 <div className="tp-candidate-inner-box">
                   <div className="top-candidate-box-thumb">
-                    <img src={"http://localhost:3000/file/"+item.photo} className="img-responsive img-circle" alt />
+                    <img src={"http://localhost:3000/file/"+item.infos.image} className="img-responsive img-circle" alt  />
                   </div>
                   <div className="top-candidate-box-detail">
                     <h4>{item.name}</h4>

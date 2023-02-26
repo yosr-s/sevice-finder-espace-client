@@ -1,6 +1,56 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import CustomerService from '../../service/CustomerService';
+import { useNavigate } from "react-router-dom";
+import ServiceService from '../../service/ServiceService';
+
 
 const Profiles = () => {
+  const navigate = useNavigate();
+
+  const [Customers,setCustomers]=useState();
+  const [Services,setServices]=useState();
+  const [cat, setCat] = useState({});
+
+  const getAllServices=()=>{
+    ServiceService.getAll()
+    .then((res)=>{
+        console.log(res.data)
+        setServices(res.data)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+  };
+  const onChangeHandlerCat = (e) => {
+
+
+    console.log(e.target.value)
+    
+    setCat(e.target.value);
+    console.log("id of cat",cat);
+    
+  };
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    console.log(cat);
+    navigate("/profiles/"+cat);
+  };
+  const getAllCustomers=()=>{
+    CustomerService.getAll()
+    .then((res)=>{
+        console.log("customers",res.data)
+        setCustomers(res.data.data)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+  };
+  useEffect(()=>{   
+    getAllCustomers();
+    getAllServices();
+
+  },[]);
+
     return (
         <>
        <div>
@@ -19,29 +69,30 @@ const Profiles = () => {
     {/* search filter */}
     <div className="row extra-mrg">
       <div className="wrap-search-filter">
-        <form>
-          <div className="col-md-3 col-sm-3">
-            <input type="text" className="form-control" placeholder="Anywhere..." />
-          </div>
-          <div className="col-md-3 col-sm-3">
-            <input type="text" className="form-control" placeholder="Keyword. Design, Seo.." />
-          </div>
-          <div className="col-md-3 col-sm-3">
-            <select className="form-control" id="j-category">
-              <option value>&nbsp;</option>
-              <option value={1}>Admin Support</option>
-              <option value={2}>Customer Service</option>
-              <option value={3}>Data Analytics</option>
-              <option value={4}>Design &amp; Creative</option>
-              <option value={5}>Software Developing</option>
-              <option value={6}>Content Writer</option>
-              <option value={7}>Sales &amp; Marketing</option>
-            </select>
-          </div>
-          <div className="col-md-3 col-sm-3">
-            <button type="submit" className="btn btn-primary full-width">Filter</button>
-          </div>
-        </form>
+      <form method="post" onSubmit={handleFilterSubmit}>
+            <div className="col-md-4 col-sm-4">
+              <input type="text" className="form-control" placeholder="Keyword: Name, Tag" />
+            </div>
+            <div className="col-md-3 col-sm-3">
+              <input type="text" className="form-control" placeholder="Location: City, State, Zip" />
+            </div>
+            <div className="col-md-3 col-sm-3">
+              <select className="form-control" id="j-category" onChange={onChangeHandlerCat}>
+                <option value>&nbsp;</option>
+                {Services?.map((item,index)=>{
+             return(
+              
+                <option  value={item._id} >{item.nom}</option>
+                
+                )
+              })}
+              
+              </select>
+            </div>
+            <div className="col-md-2 col-sm-2">
+              <button type="submit" className="btn btn-primary full-width">Filter</button>
+            </div>
+          </form>
       </div>
     </div>
     {/* search filter End */}
@@ -50,6 +101,8 @@ const Profiles = () => {
   <div className="container">
     {/* Manage Employee */}
     <div className="row">
+    {Customers?.filter(customer => customer.infos && customer.infos.service && customer.infos.service.nom).map((item,index)=>{
+     return(
       <div className="col-md-4 col-sm-6">
         <div className="jn-employee">
           <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
@@ -70,10 +123,10 @@ const Profiles = () => {
           </div>
           <div className="employee-caption">
             <div className="employee-caption-pic">
-              <img src="assets/img/client-1.jpg" className="img-responsive" alt />
+              <img src={"http://localhost:3000/file/"+item.infos.image} className="img-responsive" alt />
             </div>
-            <h4>Anna Hoysted</h4>
-            <span className="designation">Web Designer</span>
+            <h4>{item.name}</h4>
+            <span className="designation">{item.infos.service.nom}</span>
             <ul className="employee-social">
               <li><a href="#" title><i className="fa fa-facebook" /></a></li>
               <li><a href="#" title><i className="fa fa-twitter" /></a></li>
@@ -84,278 +137,10 @@ const Profiles = () => {
           </div>
         </div>
       </div>
-      <div className="col-md-4 col-sm-6">
-        <div className="jn-employee">
-          <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
-          <div className="pull-right">
-            <div className="btn-group action-btn">
-              <button type="button" className="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-ellipsis-v" />
-              </button>
-              <ul className="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Favourite</a>
-                </li>
-                <li><a href="#">Edit</a>
-                </li>
-                <li><a href="#">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="employee-caption">
-            <div className="employee-caption-pic">
-              <img src="assets/img/client-2.jpg" className="img-responsive" alt />
-            </div>
-            <h4>Jesse Leslie</h4>
-            <span className="designation">App Designer</span>
-            <ul className="employee-social">
-              <li><a href="#" title><i className="fa fa-facebook" /></a></li>
-              <li><a href="#" title><i className="fa fa-twitter" /></a></li>
-              <li><a href="#" title><i className="fa fa-google-plus" /></a></li>
-              <li><a href="#" title><i className="fa fa-linkedin" /></a></li>
-              <li><a href="#" title><i className="fa fa-instagram" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4 col-sm-6">
-        <div className="jn-employee">
-          <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
-          <div className="pull-right">
-            <div className="btn-group action-btn">
-              <button type="button" className="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-ellipsis-v" />
-              </button>
-              <ul className="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Favourite</a>
-                </li>
-                <li><a href="#">Edit</a>
-                </li>
-                <li><a href="#">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="employee-caption">
-            <div className="employee-caption-pic">
-              <img src="assets/img/client-3.jpg" className="img-responsive" alt />
-            </div>
-            <h4>Zane Joyner</h4>
-            <span className="designation">IOS Developer</span>
-            <ul className="employee-social">
-              <li><a href="#" title><i className="fa fa-facebook" /></a></li>
-              <li><a href="#" title><i className="fa fa-twitter" /></a></li>
-              <li><a href="#" title><i className="fa fa-google-plus" /></a></li>
-              <li><a href="#" title><i className="fa fa-linkedin" /></a></li>
-              <li><a href="#" title><i className="fa fa-instagram" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4 col-sm-6">
-        <div className="jn-employee">
-          <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
-          <div className="pull-right">
-            <div className="btn-group action-btn">
-              <button type="button" className="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-ellipsis-v" />
-              </button>
-              <ul className="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Favourite</a>
-                </li>
-                <li><a href="#">Edit</a>
-                </li>
-                <li><a href="#">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="employee-caption">
-            <div className="employee-caption-pic">
-              <img src="assets/img/client-4.jpg" className="img-responsive" alt />
-            </div>
-            <h4>Finn Osman</h4>
-            <span className="designation">UI/UX Designer</span>
-            <ul className="employee-social">
-              <li><a href="#" title><i className="fa fa-facebook" /></a></li>
-              <li><a href="#" title><i className="fa fa-twitter" /></a></li>
-              <li><a href="#" title><i className="fa fa-google-plus" /></a></li>
-              <li><a href="#" title><i className="fa fa-linkedin" /></a></li>
-              <li><a href="#" title><i className="fa fa-instagram" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4 col-sm-6">
-        <div className="jn-employee">
-          <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
-          <div className="pull-right">
-            <div className="btn-group action-btn">
-              <button type="button" className="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-ellipsis-v" />
-              </button>
-              <ul className="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Favourite</a>
-                </li>
-                <li><a href="#">Edit</a>
-                </li>
-                <li><a href="#">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="employee-caption">
-            <div className="employee-caption-pic">
-              <img src="assets/img/client-5.jpg" className="img-responsive" alt />
-            </div>
-            <h4>Taylah Axon</h4>
-            <span className="designation">PHP Developer</span>
-            <ul className="employee-social">
-              <li><a href="#" title><i className="fa fa-facebook" /></a></li>
-              <li><a href="#" title><i className="fa fa-twitter" /></a></li>
-              <li><a href="#" title><i className="fa fa-google-plus" /></a></li>
-              <li><a href="#" title><i className="fa fa-linkedin" /></a></li>
-              <li><a href="#" title><i className="fa fa-instagram" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4 col-sm-6">
-        <div className="jn-employee">
-          <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
-          <div className="pull-right">
-            <div className="btn-group action-btn">
-              <button type="button" className="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-ellipsis-v" />
-              </button>
-              <ul className="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Favourite</a>
-                </li>
-                <li><a href="#">Edit</a>
-                </li>
-                <li><a href="#">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="employee-caption">
-            <div className="employee-caption-pic">
-              <img src="assets/img/client-1.jpg" className="img-responsive" alt />
-            </div>
-            <h4>Daniel Decose</h4>
-            <span className="designation">Web Designer</span>
-            <ul className="employee-social">
-              <li><a href="#" title><i className="fa fa-facebook" /></a></li>
-              <li><a href="#" title><i className="fa fa-twitter" /></a></li>
-              <li><a href="#" title><i className="fa fa-google-plus" /></a></li>
-              <li><a href="#" title><i className="fa fa-linkedin" /></a></li>
-              <li><a href="#" title><i className="fa fa-instagram" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4 col-sm-6">
-        <div className="jn-employee">
-          <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
-          <div className="pull-right">
-            <div className="btn-group action-btn">
-              <button type="button" className="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-ellipsis-v" />
-              </button>
-              <ul className="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Favourite</a>
-                </li>
-                <li><a href="#">Edit</a>
-                </li>
-                <li><a href="#">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="employee-caption">
-            <div className="employee-caption-pic">
-              <img src="assets/img/client-1.jpg" className="img-responsive" alt />
-            </div>
-            <h4>Charlotte Griffiths</h4>
-            <span className="designation">SEO Expert</span>
-            <ul className="employee-social">
-              <li><a href="#" title><i className="fa fa-facebook" /></a></li>
-              <li><a href="#" title><i className="fa fa-twitter" /></a></li>
-              <li><a href="#" title><i className="fa fa-google-plus" /></a></li>
-              <li><a href="#" title><i className="fa fa-linkedin" /></a></li>
-              <li><a href="#" title><i className="fa fa-instagram" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4 col-sm-6">
-        <div className="jn-employee">
-          <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
-          <div className="pull-right">
-            <div className="btn-group action-btn">
-              <button type="button" className="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-ellipsis-v" />
-              </button>
-              <ul className="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Favourite</a>
-                </li>
-                <li><a href="#">Edit</a>
-                </li>
-                <li><a href="#">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="employee-caption">
-            <div className="employee-caption-pic">
-              <img src="assets/img/client-2.jpg" className="img-responsive" alt />
-            </div>
-            <h4>Charlotte Penfold</h4>
-            <span className="designation">Java Developer</span>
-            <ul className="employee-social">
-              <li><a href="#" title><i className="fa fa-facebook" /></a></li>
-              <li><a href="#" title><i className="fa fa-twitter" /></a></li>
-              <li><a href="#" title><i className="fa fa-google-plus" /></a></li>
-              <li><a href="#" title><i className="fa fa-linkedin" /></a></li>
-              <li><a href="#" title><i className="fa fa-instagram" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4 col-sm-6">
-        <div className="jn-employee">
-          <a href="#" className="mail-form"><i className="fa fa-envelope" /></a>
-          <div className="pull-right">
-            <div className="btn-group action-btn">
-              <button type="button" className="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <i className="fa fa-ellipsis-v" />
-              </button>
-              <ul className="dropdown-menu pull-right" role="menu">
-                <li><a href="#">Favourite</a>
-                </li>
-                <li><a href="#">Edit</a>
-                </li>
-                <li><a href="#">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="employee-caption">
-            <div className="employee-caption-pic">
-              <img src="assets/img/client-5.jpg" className="img-responsive" alt />
-            </div>
-            <h4>Daniel Dax</h4>
-            <span className="designation">Web Designer</span>
-            <ul className="employee-social">
-              <li><a href="#" title><i className="fa fa-facebook" /></a></li>
-              <li><a href="#" title><i className="fa fa-twitter" /></a></li>
-              <li><a href="#" title><i className="fa fa-google-plus" /></a></li>
-              <li><a href="#" title><i className="fa fa-linkedin" /></a></li>
-              <li><a href="#" title><i className="fa fa-instagram" /></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        )
+      })}
+     
+ 
     </div>
     <div className="row">
       <ul className="pagination">
