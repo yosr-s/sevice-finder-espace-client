@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CustomerService from '../../service/CustomerService';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ServiceService from '../../service/ServiceService';
 
 
@@ -122,8 +122,12 @@ const Profiles = () => {
             </div>
           </div>
           <div className="employee-caption">
+
             <div className="employee-caption-pic">
+              
+            <Link to={`/profile/${item._id}`}>
               <img src={"http://localhost:3000/file/"+item.infos.image} className="img-responsive" alt />
+            </Link>
             </div>
             <h4>{item.name}</h4>
             <span className="designation">{item.infos.service.nom}</span>

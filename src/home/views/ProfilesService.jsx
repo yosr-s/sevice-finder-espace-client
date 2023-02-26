@@ -38,7 +38,7 @@ const ProfilesService = () => {
         console.log(err)
     })
   };
-  
+
   useEffect(() => {
     getAllServices();
     getServiceById(id);
@@ -118,7 +118,9 @@ const ProfilesService = () => {
           </div>
           <div className="employee-caption">
             <div className="employee-caption-pic">
+            <Link to={`/profile/${item._id}`}>
               <img src={"http://localhost:3000/file/"+item.infos.image} className="img-responsive" alt />
+              </Link>
             </div>
             <h4>{item.name}</h4>
             <span className="designation">{Data.nom}</span>
