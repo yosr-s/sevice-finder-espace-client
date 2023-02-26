@@ -38,6 +38,7 @@ const ProfilesService = () => {
         console.log(err)
     })
   };
+  
   useEffect(() => {
     getAllServices();
     getServiceById(id);
