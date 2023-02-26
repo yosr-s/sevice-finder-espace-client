@@ -20,12 +20,7 @@ const ProjectsService = () => {
     console.log("id of cat",cat);
      
   };
-  const handleFilterSubmit = (e) => {
-    e.preventDefault();
-    console.log(cat);
-    navigate("/projects/"+cat);
-
-  };
+ 
   const getAllServices=()=>{
     ServiceService.getAll()
     .then((res)=>{
@@ -36,19 +31,21 @@ const ProjectsService = () => {
         console.log(err)
     })
   };
+  const getServiceById=(id)=>{
+    ServiceService.getOne(id)
+    .then((res)=>{
+        console.log(res.data)
+        setData(res.data)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+  };
   useEffect(() => {
     getAllServices();
-    return () => {
-      console.log("iddddddddd",id)
-      ServiceService.getOne(id).then((res) => {
-        console.log("data of get by id  ", res.data);
-        setData(res.data);
-        //sleep(1000)
-        console.log("dattaaaaaaaaa",Data)
-      });
-    };
+    getServiceById(id);
     
-  },[id]);
+  },[id,Data]);
   return (
     <>
     <div>
