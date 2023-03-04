@@ -31,6 +31,9 @@ const Header = () => {
               <li className="dropdown megamenu-fw"><Link to="/profiles" className="" data-toggle="">Profiles</Link>
                
               </li>
+              <li className="dropdown megamenu-fw"><Link to="/contact" className="" data-toggle="">Contact us</Link>
+               
+               </li>
              
             </ul>
           </div>

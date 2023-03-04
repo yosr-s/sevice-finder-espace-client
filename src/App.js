@@ -8,11 +8,11 @@ import ProjectsService from './home/views/ProjectsService';
 import Profiles from './home/views/Profiles';
 import ProfilesService from './home/views/ProfilesService';
 import Profile from './home/views/Profile';
-import Contact from './home/private/Contact';
 import Project from './home/views/Project';
 import Login from './components/Login';
 import Register from './components/Register';
 import About from './home/views/About';
+import Contact from './home/views/Contact';
 
 
 function App() {
