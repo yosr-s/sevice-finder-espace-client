@@ -58,7 +58,7 @@ const Profiles = () => {
   {/* Title Header Start */}
   <section className="inner-header-title" style={{backgroundImage: 'url(assets/img/bn2.jpg)'}}>
     <div className="container">
-      <h1>Browse Resume</h1>
+      <h1>Browse Profiles</h1>
     </div>
   </section>
   <div className="clearfix" />

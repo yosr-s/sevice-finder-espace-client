@@ -2,17 +2,25 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams,useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import CustomerService from '../../service/CustomerService';
+import MessageService from '../../service/MessageService';
 import ReviewService from '../../service/ReviewService';
 
 
 const Profile = () => {
   const [Review, setReview] = useState({});
+  const [Contact,setContact]=useState({});
   const navigate = useNavigate()
   const onChangeHandler = (e) => {
     setReview({
     ...Review,
     [e.target.name]: e.target.value,
     });
+};
+const onChangeHandlerContact = (e) => {
+  setContact({
+  ...Contact,
+  [e.target.name]: e.target.value,
+  });
 };
 const onSubmitHandler = (e) => {
   e.preventDefault();
@@ -26,6 +34,36 @@ const onSubmitHandler = (e) => {
       position: 'top-end',
       icon: 'success',
       title: 'Your review has been sent',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Something went wrong!',
+      footer: '<a href="">Why do I have this issue?</a>'
+    })
+  });
+}else{
+  navigate("/login")
+}
+ 
+};
+const onSubmitHandlerContact = (e) => {
+  e.preventDefault();
+  if(localStorage.getItem("client_id")!=null){
+  Contact.customer=localStorage.getItem("client_id");
+  Contact.service_provider=Data._id;
+  MessageService.create(Contact)
+  .then((res) => {
+    console.log("reees",res)
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Your message has been sent',
       showConfirmButton: false,
       timer: 1500
     })
@@ -211,6 +249,28 @@ const onSubmitHandler = (e) => {
       </div>
 
       </div>
+    </div>
+    <div className="col-md-4 col-sm-4" style={{backgroundColor:"#b3eba3"}}>
+      <br />
+      
+      <center>
+      <h2 style={{color:"green"}}>Send a message!</h2>
+      <h3>Get your work done!</h3>
+      <br />
+      <form onSubmit={onSubmitHandlerContact} method="post">
+          <div className="form-group">
+            <h4>Subject: </h4>
+            <input type="text" name="sujet" onChange={onChangeHandlerContact} className="form-control" id="name" placeholder="Enter your message" />
+            <h4>Message: </h4>
+            <input type="text" name="message" onChange={onChangeHandlerContact} className="form-control" id="name" placeholder="Enter your message" />
+          </div>
+          <button type="submit" className='btn btn-primary'>Send</button>
+
+        </form>
+      </center>
+      <br />
+
+
     </div>
     {/* Sidebar Start*/}
    
