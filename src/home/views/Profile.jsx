@@ -1,9 +1,49 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams,useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import CustomerService from '../../service/CustomerService';
+import ReviewService from '../../service/ReviewService';
 
 
 const Profile = () => {
+  const [Review, setReview] = useState({});
+  const navigate = useNavigate()
+  const onChangeHandler = (e) => {
+    setReview({
+    ...Review,
+    [e.target.name]: e.target.value,
+    });
+};
+const onSubmitHandler = (e) => {
+  e.preventDefault();
+  if(localStorage.getItem("client_id")!=null){
+  Review.customer=localStorage.getItem("client_id");
+  Review.service_provider=Data._id;
+  ReviewService.create(Review)
+  .then((res) => {
+    console.log("reees",res)
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Your review has been sent',
+      showConfirmButton: false,
+      timer: 1500
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Something went wrong!',
+      footer: '<a href="">Why do I have this issue?</a>'
+    })
+  });
+}else{
+  navigate("/login")
+}
+ 
+};
   const { id } = useParams();
   console.log("idddddddddddddd",id);
   const [Data, setData] = useState({});
@@ -21,7 +61,7 @@ const Profile = () => {
   useEffect(() => {
     getCustomerById(id);
     
-  },[]);
+  },[Data,Data.reviews]);
 
     return (
         <>
@@ -160,10 +200,10 @@ const Profile = () => {
         <h3>Leave your review!</h3>
         <br />
 
-        <form action="">
+        <form onSubmit={onSubmitHandler} method="post">
           <div className="form-group">
             <h4>your review: </h4>
-            <input type="text" className="form-control" id="name" placeholder="Enter your review" />
+            <input type="text" name="review" onChange={onChangeHandler} className="form-control" id="name" placeholder="Enter your review" />
           </div>
           <button type="submit" className='btn btn-primary'>Submit</button>
 

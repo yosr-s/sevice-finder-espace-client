@@ -25,7 +25,6 @@ const onSubmitHandler = (e) => {
       showConfirmButton: false,
       timer: 1500
     })
-    //navigate("/category-list")
   })
   .catch((err) => {
     console.log(err);

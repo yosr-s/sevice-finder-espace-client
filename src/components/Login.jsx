@@ -14,9 +14,9 @@ const Login = () => {
   };
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(Data);
+    console.log("daataaa",Data);
     UserService.authenticate(Data).then((res) => {
-      console.log(res);
+      console.log("reees",res);
       console.log("helloooo");
 
       localStorage.setItem("client_name", res.data.data.user.name);
