@@ -13,6 +13,11 @@ import Login from './components/Login';
 import Register from './components/Register';
 import About from './home/views/About';
 import Contact from './home/views/Contact';
+import Dashbord from './home/private/Dashbord';
+import PostProject from './home/private/PostProject';
+import BecomeProvider from './home/private/BecomeProvider';
+import EditProfile from './home/private/EditProfile';
+import Messages from './home/private/Messages';
 
 
 function App() {
@@ -32,9 +37,23 @@ function App() {
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/about" element={<About/>} />
+          {/**private routes */}
+          <Route path="/dashbord" element={<Dashbord/>} />
+          <Route path="/post" element={<PostProject/>} />
+          <Route path="/addinfos" element={<BecomeProvider/>} />
+          <Route path="/editprofile" element={<EditProfile/>} />
+          <Route path="/messages" element={<Messages/>} />
+
+
+
+
+
+
 
 
         </Route>
+
+       
 
 
       </Routes>

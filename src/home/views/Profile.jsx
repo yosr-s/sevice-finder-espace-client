@@ -129,7 +129,7 @@ const onSubmitHandlerContact = (e) => {
               <ul>
                 <li><strong className="j-view">1</strong>Service</li>
                 <li><strong className="j-applied">{Data.projects.length}</strong> Projects</li>
-                <li><strong className="j-shared">120</strong>Reviews</li>
+                <li><strong className="j-shared">{Data.reviews.length}</strong>Reviews</li>
               </ul>
             </div>
           </div>

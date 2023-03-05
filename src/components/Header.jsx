@@ -12,10 +12,18 @@ const Header = () => {
             <a className="navbar-brand" href="index.html"><img src="assets/img/logo-white.png" className="logo logo-display" alt /><img src="assets/img/logo-white.png" className="logo logo-scrolled" alt /></a>
           </div>
           <div className="collapse navbar-collapse" id="navbar-menu">
+          {localStorage.getItem('client_id') != null ?
+            <ul className="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+              <li><a href="register.html"><i className="fa fa-sign-in" />Sign Out</a></li>
+              <li className="left-br"><Link to="/dashbord" className="signin">Dashboard</Link></li>
+            </ul>
+            :
             <ul className="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
               <li><Link to="/register"><i className="fa fa-pencil" aria-hidden="true" />Register</Link></li>
-              <li className="left-br"><Link to="login"   className="signin">Login Now</Link></li>
+              <li className="left-br"><Link to="login" className="signin">Login Now</Link></li>
             </ul>
+          }
+
             <ul className="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
               <li className="">
                 <Link to="/" className="" data-toggle="">Home</Link>
