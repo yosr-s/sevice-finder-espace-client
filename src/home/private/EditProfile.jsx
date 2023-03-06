@@ -11,20 +11,7 @@ const EditProfile = () => {
     <div className="container-fluid">
       <div className="row">
         {/* Sidebar Wrap */}
-        <div className="col-lg-3 col-md-4">
-          <div className="side-dashboard">
-            <div className="dashboard-avatar">
-              <div className="dashboard-avatar-thumb">
-                <img src="assets/img/can-2.png" className="img-avater" alt />
-              </div>
-              <div className="dashboard-avatar-text">
-                <h4>Shaurya Preet</h4>
-                <span>Zivara Technoloty</span>
-              </div>
-            </div>
-           <NavBarDashbord/>
-          </div>
-        </div>
+      <NavBarDashbord/>
         {/* Content Wrap */}
         <div className="col-lg-9 col-md-8">
           <div className="dashboard-body">

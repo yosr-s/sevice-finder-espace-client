@@ -1,8 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import CustomerService from '../../service/CustomerService'
 import NavBarDashbord from './NavBarDashbord'
 
 const Dashbord = () => {
+  let id=localStorage.getItem('client_id')
+  console.log("idddddddddddddd",id);
+  const [Data, setData] = useState({});
+  const getCustomerById=(id)=>{
+    CustomerService.getOne(id)
+    .then((res)=>{
+        console.log("res.data",res.data)
+        setData(res.data)
+        console.log("data",Data)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+  };
+  useEffect(() => {
+    getCustomerById(id);
+    
+  },[]);
     return (
         <>
        <div>
@@ -12,20 +31,8 @@ const Dashbord = () => {
     <div className="container-fluid">
       <div className="row">
         {/* Sidebar Wrap */}
-        <div className="col-lg-3 col-md-4">
-          <div className="side-dashboard">
-            <div className="dashboard-avatar">
-              <div className="dashboard-avatar-thumb">
-                <img src="assets/img/can-2.png" className="img-avater" alt />
-              </div>
-              <div className="dashboard-avatar-text">
-                <h4>Shaurya Preet</h4>
-                <span>Zivara Technoloty</span>
-              </div>
-            </div>
-           <NavBarDashbord/>
-          </div>
-        </div>
+        <NavBarDashbord/>
+
         {/* Content Wrap */}
         <div className="col-lg-9 col-md-8">
           <div className="dashboard-body">
@@ -35,142 +42,62 @@ const Dashbord = () => {
               </div>
               <div className="dashboard-caption-wrap">
                 {/* Overview */}
+                {Data && Data.infos && Data.infos.service && Data.infos.image && Data.infos.service.nom  && (
                 <div className="row">
                   <div className="col-lg-3 col-md-6 col-sm-12">
                     <div className="dashboard-stat widget-1">
-                      <div className="dashboard-stat-content"><h4>210</h4> <span>Job Posted</span></div>
+                      <div className="dashboard-stat-content"><h4>{Data.projects.length}</h4> <span>Projects Posted</span></div>
                       <div className="dashboard-stat-icon"><i className="ti-location-pin" /></div>
                     </div>	
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-12">
                     <div className="dashboard-stat widget-2">
-                      <div className="dashboard-stat-content"><h4>80</h4> <span>Pending Jobs</span></div>
+                      <div className="dashboard-stat-content"><h4>{Data.reviews.length}</h4> <span>Reviews</span></div>
                       <div className="dashboard-stat-icon"><i className="ti-layers" /></div>
                     </div>	
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-12">
                     <div className="dashboard-stat widget-3">
-                      <div className="dashboard-stat-content"><h4>712</h4> <span>Total Views</span></div>
+                      <div className="dashboard-stat-content"><h4>{Data.messages.length}</h4> <span>Messages</span></div>
                       <div className="dashboard-stat-icon"><i className="ti-pie-chart" /></div>
                     </div>	
                   </div>
                   <div className="col-lg-3 col-md-6 col-sm-12">
                     <div className="dashboard-stat widget-4">
-                      <div className="dashboard-stat-content"><h4>107</h4> <span>Expire Jobs</span></div>
+                      <div className="dashboard-stat-content"><h4>1</h4> <span>Service</span></div>
                       <div className="dashboard-stat-icon"><i className="ti-bookmark" /></div>
                     </div>	
                   </div>
                 </div>
+                 )}
                 {/* Notifications */}
                 <div className="row">
-                  <div className="col-lg-6 col-md-12">
+                  <div className="col-lg-12 col-md-12">
                     <div className="dashboard-gravity-list with-icons">
-                      <h4>Recent Activities</h4>
+                      <h4>Your Dashboard</h4>
                       <ul>
                         <li>
-                          <i className="dash-icon-box ti-layers" /> Your job <strong><a href="#">App Developer</a></strong> has been approved!
+                          <i className="dash-icon-box ti-layers" /> <strong><Link to="/addinfos">Add a service you provide and become one of us!</Link></strong> 
                           <a href="#" className="close-list-item"><i className="fa fa-close" /></a>
                         </li>
                         <li>
-                          <i className="dash-icon-box ti-star" /> Your job <strong><a href="#">Android Developer</a></strong> expire soon!
+                          <i className="dash-icon-box ti-star" />  <strong><Link to="/post">Post a project of yours!</Link></strong> 
                           <a href="#" className="close-list-item"><i className="fa fa-close" /></a>
                         </li>
                         <li>
-                          <i className="dash-icon-box ti-heart" /> Someone bookmarked your <strong><a href="#">Web Designer</a></strong> job!
+                          <i className="dash-icon-box ti-heart" />  <strong><Link to="/editprofile">Edit your profile information!</Link></strong> 
                           <a href="#" className="close-list-item"><i className="fa fa-close" /></a>
                         </li>
+                       
                         <li>
-                          <i className="dash-icon-box ti-star" /> Gracie Mahmood left a review <div className="numerical-rating mid" data-rating="3.8" /> on <strong><a href="#">Sonal Cafe</a></strong>
+                          <i className="dash-icon-box ti-heart" /> <strong><Link to="/messages">View the messages you got! </Link></strong>
                           <a href="#" className="close-list-item"><i className="fa fa-close" /></a>
                         </li>
-                        <li>
-                          <i className="dash-icon-box ti-heart" /> Your job <strong><a href="#">UI/UX Designer</a></strong> has been approved!
-                          <a href="#" className="close-list-item"><i className="fa fa-close" /></a>
-                        </li>
-                        <li>
-                          <i className="dash-icon-box ti-heart" /> Someone bookmarked your <strong><a href="#">PHP Developer</a></strong> job!
-                          <a href="#" className="close-list-item"><i className="fa fa-close" /></a>
-                        </li>
-                        <li>
-                          <i className="dash-icon-box ti-star" /> Your job <strong><a href="#">Software Developer</a></strong> expire soon!
-                          <a href="#" className="close-list-item"><i className="fa fa-close" /></a>
-                        </li>
+                      
                       </ul>
                     </div>
                   </div>
-                  <div className="col-lg-6 col-md-12">
-                    <div className="dashboard-gravity-list invoices with-icons">
-                      <h4>Invoices</h4>
-                      <ul>
-                        <li><i className="dash-icon-box ti-files" />
-                          <strong>Starter Plan</strong>
-                          <ul>
-                            <li className="unpaid">Unpaid</li>
-                            <li>Order: #20551</li>
-                            <li>Date: 01/08/2019</li>
-                          </ul>
-                          <div className="buttons-to-right">
-                            <a href="#" className="button gray">View Invoice</a>
-                          </div>
-                        </li>
-                        <li><i className="dash-icon-box ti-files" />
-                          <strong>Basic Plan</strong>
-                          <ul>
-                            <li className="paid">Paid</li>
-                            <li>Order: #20550</li>
-                            <li>Date: 01/07/2019</li>
-                          </ul>
-                          <div className="buttons-to-right">
-                            <a href="#" className="button gray">View Invoice</a>
-                          </div>
-                        </li>
-                        <li><i className="dash-icon-box ti-files" />
-                          <strong>Extended Plan</strong>
-                          <ul>
-                            <li className="paid">Paid</li>
-                            <li>Order: #20549</li>
-                            <li>Date: 01/06/2019</li>
-                          </ul>
-                          <div className="buttons-to-right">
-                            <a href="#" className="button gray">View Invoice</a>
-                          </div>
-                        </li>
-                        <li><i className="dash-icon-box ti-files" />
-                          <strong>Platinum Plan</strong>
-                          <ul>
-                            <li className="paid">Paid</li>
-                            <li>Order: #20548</li>
-                            <li>Date: 01/05/2019</li>
-                          </ul>
-                          <div className="buttons-to-right">
-                            <a href="#" className="button gray">View Invoice</a>
-                          </div>
-                        </li>
-                        <li><i className="dash-icon-box ti-files" />
-                          <strong>Extended Plan</strong>
-                          <ul>
-                            <li className="paid">Paid</li>
-                            <li>Order: #20547</li>
-                            <li>Date: 01/04/2019</li>
-                          </ul>
-                          <div className="buttons-to-right">
-                            <a href="#" className="button gray">View Invoice</a>
-                          </div>
-                        </li>
-                        <li><i className="dash-icon-box ti-files" />
-                          <strong>Platinum Plan</strong>
-                          <ul>
-                            <li className="paid">Paid</li>
-                            <li>Order: #20546</li>
-                            <li>Date: 01/03/2019</li>
-                          </ul>
-                          <div className="buttons-to-right">
-                            <a href="#" className="button gray">View Invoice</a>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>	
+                 
                 </div>
               </div>
             </div>

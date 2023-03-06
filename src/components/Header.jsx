@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
+  let log=localStorage.getItem('client_id')
+
+  useEffect(() => {
+  }, [log])
     return (
         <>
          <nav className="navbar navbar-default  navbar-fixed  white bootsnav">
