@@ -30,7 +30,7 @@ const Login = () => {
         console.log("status",res.data.status);
         console.log("itemtype",res.data.data.user.itemtype);
         navigate("/");
-        window.location.reload();
+        //window.location.reload();
        
       } else {
         Swal.fire({

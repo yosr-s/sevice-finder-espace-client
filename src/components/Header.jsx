@@ -1,8 +1,34 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import UserService from '../service/UserService'
 
 const Header = () => {
+  const navigate = useNavigate()
   let log=localStorage.getItem('client_id')
+  const onSubmitHandler = () => {
+    Swal.fire({
+      title: 'Are you sure to logout?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmedText: 'Yes',
+      denyButtonText: `No`,
+    }).then((result)=>{
+      if (result.isConfirmed){
+        UserService.logout()
+        .then((res)=>{
+          console.log(res)
+        });
+        localStorage.clear("user");
+        localStorage.clear("token");
+        localStorage.clear("refreshToken");
+        navigate("/login");
+        
+      }else if(result.isDenied){
+        Swal.fire('not')
+      }
+    });
+  };
 
   useEffect(() => {
   }, [log])
@@ -18,7 +44,7 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="navbar-menu">
           {localStorage.getItem('client_id') != null ?
             <ul className="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-              <li><a href="register.html"><i className="fa fa-sign-in" />Sign Out</a></li>
+              <li><Link to="" onClick={(e)=>{onSubmitHandler()}} ><i className="fa fa-sign-in" />Sign Out</Link></li>
               <li className="left-br"><Link to="/dashbord" className="signin">Dashboard</Link></li>
             </ul>
             :

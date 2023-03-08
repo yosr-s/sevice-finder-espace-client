@@ -40,41 +40,46 @@ const Messages = () => {
                 <h4><i className="ti-wallet" />My Messages</h4>
               </div>
               <div className="dashboard-caption-wrap">
-                <div className="table-responsive">
-                  <table className="table table-responsive">
-                    <thead>
-                      <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Mobile</th>
-                        <th scope="col">Sujet</th>
-                        <th scope="col">Message</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                   {Data.messages?.map((item,index)=>{
+              <ul className="list">
+      {Data.messages?.map((item,index)=>{
      return(
-                      <tr>
-                       <td>{index}</td>
-                        <td>{item.customer.name}</td>
-                        <td>{item.customer.email}</td>
-                        <td>{item.customer.mobile}</td>
-                        <td>{item.sujet}</td>
-                        <td>{item.message}</td>
-                      </tr>
-                         )
-                        })}
-                
-                    </tbody>
-                  </table>
-                </div>
-                <button type="submit" className="btn-savepreview"><i className="ti-angle-double-right" />Continue</button>
+        <li className="manage-list-row clearfix col-md-12">
+          <div className="job-info premium-job">
+            <div className="job-img">
+              <img src={"http://localhost:3000/file/"+item.customer.infos.image} className="attachment-thumbnail" alt="Academy Pro Theme" />
+            </div>
+            <div className="job-details">
+              <h3 className="job-name">{item.sujet} <span className="cl-danger"></span></h3>
+              <small className="job-company">{item.message}</small>
+              <br />
+              <small ><i className="ti-time" /><a href="#">{item.customer.name}</a></small>
+              <br />
+              <small ><i className="ti-email" /><a href="#">{item.customer.email}</a></small>
+              <br />
+              <small ><i className="ti-mobile" /><a href="#">{item.customer.mobile}</a></small>
+
+
+
+              
+            </div>
+          </div>
+          <div className="job-buttons">
+            <a href="#" className="btn btn-cancel manage-btn" data-toggle="tooltip" data-placement="top" title data-original-title="Remove"><i className="ti-close" /></a>
+          </div>
+        </li>
+           )
+          })}
+ 
+</ul>
+               
               </div>
             </div>
           </div>
         </div>
+      
+     
+
+
       </div>
     </div>
   </section>

@@ -1,11 +1,38 @@
 import React, { useEffect, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink ,useNavigate} from 'react-router-dom'
+import Swal from 'sweetalert2'
 import CustomerService from '../../service/CustomerService'
+import UserService from '../../service/UserService'
 import './NavBarDashbord.css' // Import the CSS file
 
 
 
 const NavBarDashbord = () => {
+
+  const navigate = useNavigate()
+  const onSubmitHandler = () => {
+    Swal.fire({
+      title: 'Are you sure to logout?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmedText: 'Yes',
+      denyButtonText: `No`,
+    }).then((result)=>{
+      if (result.isConfirmed){
+        UserService.logout()
+        .then((res)=>{
+          console.log(res)
+        });
+        localStorage.clear("user");
+        localStorage.clear("token");
+        localStorage.clear("refreshToken");
+        navigate("/login");
+        
+      }else if(result.isDenied){
+        Swal.fire('not')
+      }
+    });
+  };
     let id=localStorage.getItem('client_id')
   console.log("idddddddddddddd",id);
   const [Data, setData] = useState({});
@@ -32,12 +59,12 @@ const NavBarDashbord = () => {
 
 <div className="dashboard-avatar">
               <div className="dashboard-avatar-thumb">
-              {Data.infos && Data.infos.image && (
+              {Data.infos && Data.infos.image  && Data.infos.service && Data.infos.service.nom &&(
                 <img src={"http://localhost:3000/file/"+Data.infos.image} className="img-avater" alt />
                 )}              </div>
               <div className="dashboard-avatar-text">
-                <h4>Shaurya Preet</h4>
-                <span>Zivara Technoloty</span>
+                <h4>{Data.name}</h4>
+                <span></span>
               </div>
             </div>
        
@@ -48,7 +75,7 @@ const NavBarDashbord = () => {
   <li><NavLink to="/addinfos" activeClassName="active"><i className="ti-briefcase" />Become a service provider</NavLink></li>
   <li><NavLink to="/editprofile"><i className="ti-id-badge" />Edit Profile</NavLink></li>
   <li><NavLink to="/messages"><i className="ti-user" />Messages</NavLink></li>
-  <li><a href="login.html"><i className="ti-power-off" />Logout</a></li>
+  <li><Link to="/"  onClick={(e)=>{onSubmitHandler()}}><i className="ti-power-off" />Logout</Link></li>
 </ul>
 
              

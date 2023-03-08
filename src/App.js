@@ -21,6 +21,12 @@ import Messages from './home/private/Messages';
 
 
 function App() {
+  const PrivateRoutes = ({ children }) => {
+    if (!localStorage.getItem("client_id")) {
+      return <Navigate to="/login" />;
+    }
+    return children;
+  };
   return (
     <>
     <BrowserRouter>
@@ -38,11 +44,11 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/about" element={<About/>} />
           {/**private routes */}
-          <Route path="/dashbord" element={<Dashbord/>} />
-          <Route path="/post" element={<PostProject/>} />
-          <Route path="/addinfos" element={<BecomeProvider/>} />
-          <Route path="/editprofile" element={<EditProfile/>} />
-          <Route path="/messages" element={<Messages/>} />
+          <Route path="/dashbord" element={<PrivateRoutes><Dashbord/></PrivateRoutes>} />
+          <Route path="/post" element={<PrivateRoutes><PostProject/></PrivateRoutes>} />
+          <Route path="/addinfos" element={<PrivateRoutes><BecomeProvider/></PrivateRoutes>} />
+          <Route path="/editprofile" element={<PrivateRoutes><EditProfile/></PrivateRoutes>} />
+          <Route path="/messages" element={<PrivateRoutes><Messages/></PrivateRoutes>} />
 
 
 
