@@ -127,67 +127,71 @@ const BecomeProvider = () => {
               <div className="dashboard-caption-header">
                 <h4><i className="ti-id-badge" />Add additional infos to become a service provider</h4>
               </div>
-              <form onSubmit={onSubmitHandler} enctype="multipart/form-data">
-              <div className="dashboard-caption-wrap">
-                {/* row */}
-                <div className="row mrg-top-20">
-                  <div className="col-lg-12 col-md-12 col-sm-12">
-                    <div className="form-group">
-                      <label>Profile Photo</label>
-                      <input type="file" name="file"
-                        onChange={handleFileChange} className="form-control"  />
-                    </div>	
-                  </div>
+              {Customer.infos = null ?
+               <form onSubmit={onSubmitHandler} enctype="multipart/form-data">
+               <div className="dashboard-caption-wrap">
+                 {/* row */}
+                 <div className="row mrg-top-20">
+                   <div className="col-lg-12 col-md-12 col-sm-12">
+                     <div className="form-group">
+                       <label>Profile Photo</label>
+                       <input type="file" name="file"
+                         onChange={handleFileChange} className="form-control"  />
+                     </div>	
+                   </div>
+                  
+                  
+                   <div className="col-lg-4 col-md-6 col-sm-12">
+       <div className="form-group">
+         <label>Service</label>
+         {Service.length > 0 ? (
+           <select id="jb-category" name="service" className="form-control" onChange={onChangeHandlerSer}>
+             {Service.map((item) => (
+               <option key={item._id} value={item._id}>
+                 {item.nom}
+               </option>
+             ))}
+           </select>
+         ) : (
+           <p>Loading Service data...</p>
+         )}
+       </div>
+     </div>
+                   <div className="col-lg-12 col-md-12 col-sm-12">
+                     <div className="form-group">
+                       <label>Your facebook link</label>
+                       <input onChange={onChangeHandler} type="text" name="fb_link" className="form-control" placeholder="facebook link" />
+                     </div>	
+                   </div>
+                   <div className="col-lg-12 col-md-12 col-sm-12">
+                     <div className="form-group">
+                       <label>Your Instagram link</label>
+                       <input onChange={onChangeHandler} type="text" name="insta_link" className="form-control" placeholder="instagram link" />
+                     </div>	
+                   </div>
+                   <div className="col-lg-12 col-md-12 col-sm-12">
+                     <div className="form-group">
+                       <label>LinkedIn link</label>
+                       <input onChange={onChangeHandler} type="text" name="linkedin_link" className="form-control" placeholder="linkedIn link" />
+                     </div>	
+                   </div>
+                   <div className="col-md-12 col-sm-12">
+                       <div className="form-group">
+                         <label>Description</label>
+                         <textarea onChange={onChangeHandler}  name="description" className="form-control about height-120" placeholder="About You" defaultValue={""} />
+                       </div>	
+                     </div>
                  
-                 
-                  <div className="col-lg-4 col-md-6 col-sm-12">
-      <div className="form-group">
-        <label>Service</label>
-        {Service.length > 0 ? (
-          <select id="jb-category" name="service" className="form-control" onChange={onChangeHandlerSer}>
-            {Service.map((item) => (
-              <option key={item._id} value={item._id}>
-                {item.nom}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <p>Loading Service data...</p>
-        )}
-      </div>
-    </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12">
-                    <div className="form-group">
-                      <label>Your facebook link</label>
-                      <input onChange={onChangeHandler} type="text" name="fb_link" className="form-control" placeholder="facebook link" />
-                    </div>	
-                  </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12">
-                    <div className="form-group">
-                      <label>Your Instagram link</label>
-                      <input onChange={onChangeHandler} type="text" name="insta_link" className="form-control" placeholder="instagram link" />
-                    </div>	
-                  </div>
-                  <div className="col-lg-12 col-md-12 col-sm-12">
-                    <div className="form-group">
-                      <label>LinkedIn link</label>
-                      <input onChange={onChangeHandler} type="text" name="linkedin_link" className="form-control" placeholder="linkedIn link" />
-                    </div>	
-                  </div>
-                  <div className="col-md-12 col-sm-12">
-                      <div className="form-group">
-                        <label>Description</label>
-                        <textarea onChange={onChangeHandler}  name="description" className="form-control about height-120" placeholder="About You" defaultValue={""} />
-                      </div>	
-                    </div>
-                
-                </div>
-              
-              <br />
+                 </div>
                
-                <button type="submit" className="btn-savepreview"><i className="ti-angle-double-right" />Update Changes</button>
-              </div>
-              </form>
+               <br />
+                
+                 <button type="submit" className="btn-savepreview"><i className="ti-angle-double-right" />Update Changes</button>
+               </div>
+               </form>
+               :
+               <h2>You're already a service provider!!</h2> }
+             
             </div>
           </div>
         </div>
